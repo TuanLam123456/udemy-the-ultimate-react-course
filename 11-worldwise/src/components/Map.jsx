@@ -16,12 +16,12 @@ import Button from "./Button";
 function Map() {
   const { cities } = useCities();
   const [mapPosition, setMapPosition] = useState([40, 0]);
-  const [searchParams] = useSearchParams();
   const {
     isLoading: isLoadingPosition,
     position: geoLocationPosition,
     getPosition,
   } = useGeolocation();
+  const [searchParams] = useSearchParams();
   const mapLat = searchParams.get("lat");
   const mapLng = searchParams.get("lng");
 
@@ -38,7 +38,7 @@ function Map() {
     <div className={styles.mapContainer}>
       {!geoLocationPosition && (
         <Button type={"position"} onClick={getPosition}>
-          {isLoadingPosition ? "Loading..." : "User your position"}
+          {isLoadingPosition ? "Loading..." : "Use your position"}
         </Button>
       )}
       <MapContainer
@@ -78,7 +78,7 @@ function DetectClick() {
   const navigate = useNavigate();
   useMapEvents({
     click: (e) => {
-      navigate(`form?${e.latlng.lat}&${e.latlng.lng}`);
+      navigate(`form?lat=${e.latlng.lat}&lng=${e.latlng.lng}`);
     },
   });
 }

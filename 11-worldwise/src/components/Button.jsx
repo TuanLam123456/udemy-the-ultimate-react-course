@@ -2,9 +2,9 @@ import styles from "./Button.module.css";
 
 function Button({ children, onClick, type }) {
   return (
-    <buuton className={`${styles.btn} ${styles[type]}`} onClick={onClick}>
+    <button className={`${styles.btn} ${styles[type]}`} onClick={onClick}>
       {children}
-    </buuton>
+    </button>
   );
 }
 
