@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { faker } from "@faker-js/faker";
 import "./styles.css";
+import withToggles from "./HOC.jsx";
 
 const products = Array.from({ length: 20 }, () => {
   return {
     productName: faker.commerce.productName(),
     description: faker.commerce.productDescription(),
-    price: faker.commerce.price()
+    price: faker.commerce.price(),
   };
 });
 
 const companies = Array.from({ length: 15 }, () => {
   return {
     companyName: faker.company.name(),
-    phrase: faker.company.catchPhrase()
+    phrase: faker.company.catchPhrase(),
   };
 });
 
@@ -46,7 +47,7 @@ function CompanyItem({ company, defaultVisibility }) {
   );
 }
 
-function List({ title, items }) {
+function List({ title, items, render }) {
   const [isOpen, setIsOpen] = useState(true);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -65,29 +66,11 @@ function List({ title, items }) {
           {isOpen ? <span>&or;</span> : <span>&and;</span>}
         </button>
       </div>
-      {isOpen && (
-        <ul className="list">
-          {displayItems.map((product) => (
-            <ProductItem key={product.productName} product={product} />
-          ))}
-        </ul>
-      )}
+      {isOpen && <ul className="list">{displayItems.map(render)}</ul>}
 
       <button onClick={() => setIsCollapsed((isCollapsed) => !isCollapsed)}>
         {isCollapsed ? `Show all ${items.length}` : "Show less"}
       </button>
-    </div>
-  );
-}
-
-export default function App() {
-  return (
-    <div>
-      <h1>Render Props Demo</h1>
-
-      <div className="col-2">
-        <List title="Products" items={products} />
-      </div>
     </div>
   );
 }
@@ -102,3 +85,37 @@ function ProductList({ title, items }) {
     </ul>
   );
 }
+
+export default function App() {
+  const ProductListWithToggles = withToggles(ProductList);
+
+  return (
+    <div>
+      <h1>Render Props Demo</h1>
+      
+      {/* <div className="col-2">
+        <List
+          title="Products"
+          items={products}
+          render={(product) => (
+            <ProductItem key={product.productName} product={product} />
+          )}
+        />
+        <List
+          title="companies"
+          items={companies}
+          render={(company) => (
+            <CompanyItem key={company.companyName} company={company} defaultVisibility={false} />
+          )}
+        />
+      </div> */}
+
+      <div className="col-2">
+        <ProductList title={'Products HOC'} items={products} />
+        <ProductListWithToggles title={'Products HOC'} items={products} />
+      </div>
+    </div>
+  );
+}
+
+
