@@ -1,8 +1,9 @@
 import styled, { css } from "styled-components";
 
+// React 19 ignores Form.defaultProps, so "regular" is the default value here
 const Form = styled.form`
-  ${(props) =>
-    props.type !== "modal" &&
+  ${({ type = "regular" }) =>
+    type === "regular" &&
     css`
       padding: 2.4rem 4rem;
 
